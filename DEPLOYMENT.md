@@ -272,7 +272,7 @@ All required environment variables:
 
 ```bash
 # Required
-SECRET_KEY=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
+SECRET_KEY=YOUR_OPENAI_API_KEY
 FIRMS_API_KEY=eyJ0eXAiOiJKV1QiLCJvcmlnaW4iOiJFYXJ0aGRhdGEgTG9naW4iLCJzaWciOiJlZGxqd3...
 MAPBOX_ACCESS_TOKEN=pk.eyJ1IjoianJvZGFtYXppbmciLCJhIjoiY21oMnZ4YzEyMXVyOTJscG9yeWt6Z3NndyJ9...
 DATABASE_URL=postgresql://user:jcroden25@gmail.com:5432/dbname
