@@ -1,0 +1,83 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    services:
+      postgres:
+        image: postgis/postgis:15-3.3
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: trailguardian_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: |
+        cd backend
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pytest pytest-cov
+    
+    - name: Run tests
+      env:
+        DATABASE_URL: postgresql://postgres:jcroden@gmail.com:5432/trailguardian_test
+        SECRET_KEY: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
+      run: |
+        cd backend
+        pytest tests/ --cov=app --cov-report=xml
+    
+    - name: Upload coverage
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./backend/coverage.xml
+
+  lint:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install linting tools
+      run: |
+        pip install black flake8 mypy
+    
+    - name: Run Black
+      run: |
+        cd backend
+        black --check app/
+    
+    - name: Run Flake8
+      run: |
+        cd backend
+        flake8 app/ --max-line-length=100

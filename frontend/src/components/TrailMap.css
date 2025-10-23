@@ -1,0 +1,20 @@
+.popup-content {
+  padding: 10px;
+  font-family: Arial, sans-serif;
+}
+
+.popup-content h3 {
+  margin: 0 0 10px 0;
+  color: #667eea;
+}
+
+.popup-content p {
+  margin: 5px 0;
+  font-size: 14px;
+}
+
+.threat-badge {
+  font-weight: bold;
+  color: #ff6b6b;
+  font-size: 16px;
+}
